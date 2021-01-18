@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Search | {% endblock %}
+
+{% block content %}
+    <div class="columns is-multiline mb-6">
+        <div class="column is-12 has-text-centered mt-6 mb-6">
+            <h2 class="is-size-3">Search</h2>
+            <h3>Search term: "{{ query }}"</h3>
+        </div>
+
+        {% for product in products %}
+            {% include 'product/parts/list_item.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}
