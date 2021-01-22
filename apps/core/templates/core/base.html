@@ -49,6 +49,10 @@
                     {% endfor %}
 
                     <a href="{% url 'contact' %}" class="navbar-item">Contact</a>
+
+                    <div class="navbar-item">
+                        <a href="{% url 'cart' %}" class="button is-dark">Cart{% if cart %} ({{ cart|length }}){% endif %}</a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -68,6 +72,11 @@
             {% else %}
                 <a href="{% url 'become_vendor' %}">Become vendor</a>
             {% endif %}
+
+            <a href="{% url 'vendors' %}">Vendors</a>
         </footer>
+
+        {% block scripts %}
+        {% endblock %}
     </body>
 </html>
