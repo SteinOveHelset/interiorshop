@@ -26,6 +26,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Price</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
 
@@ -34,6 +35,7 @@
                         <tr>
                             <td><a href="{% url 'product' product.category.slug product.slug %}">{{ product.title }}</a></td>
                             <td>${{ product.price }}</td>
+                            <td><a href="{% url 'edit_product' product.id %}">Edit</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

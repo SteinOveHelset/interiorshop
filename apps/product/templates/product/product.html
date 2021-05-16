@@ -3,10 +3,21 @@
 {% block title %}{{ product.title }} | {% endblock %}
 
 {% block content %}
+<div id="productapp">
     {% if product.image %}
         <figure class="image is-4by3 mb-6">
-            <img src="{{ product.image.url }}">
+            <img :src="mainImage.image">
         </figure>
+    {% endif %}
+
+    {% if product.images.all %}    
+        <hr>
+
+        <div class="columns">
+            <div class="column is-2" v-for="image in images" v-bind:key="image.id">
+                <img :src="image.thumbnail" @click="changeMainImage(image)">
+            </div>
+        </div>
     {% endif %}
 
     <h1 class="title">{{ product.title }}, ${{ product.price }}</h1>
@@ -50,4 +61,31 @@
             {% endfor %}
         </div>
     {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ imagesstring|json_script:"json-imagesstring" }}
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    const ProductApp = {
+        data() {
+            return {
+                mainImage: '',
+                images: []
+            }
+        },
+        mounted() {
+            this.images = JSON.parse(JSON.parse(document.getElementById("json-imagesstring").textContent))
+            this.mainImage = this.images[0]
+        },
+        methods: {
+            changeMainImage(image) {
+                this.mainImage = image
+            }
+        }
+    }
+
+    Vue.createApp(ProductApp).mount('#productapp')
+</script>
 {% endblock %}

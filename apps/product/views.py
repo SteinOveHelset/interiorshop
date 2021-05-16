@@ -20,6 +20,13 @@ def product(request, category_slug, product_slug):
 
     product = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
 
+    imagesstring = '{"thumbnail": "%s", "image": "%s", "id": "mainimage"},' % (product.get_thumbnail(), product.image.url)
+
+    for image in product.images.all():
+        imagesstring += ('{"thumbnail": "%s", "image": "%s", "id": "%s"},' % (image.get_thumbnail(), image.image.url, image.id))
+    
+    print(imagesstring)
+
     if request.method == 'POST':
         form = AddToCartForm(request.POST)
 
@@ -39,7 +46,14 @@ def product(request, category_slug, product_slug):
     if len(similar_products) >= 4:
         similar_products = random.sample(similar_products, 4)
 
-    return render(request, 'product/product.html', {'form': form, 'product': product, 'similar_products': similar_products})
+    context = {
+        'form': form,
+        'product': product,
+        'similar_products': similar_products,
+        'imagesstring': "[" + imagesstring.rstrip(',') + "]"
+    }
+
+    return render(request, 'product/product.html', context)
 
 def category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
